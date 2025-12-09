@@ -11,10 +11,10 @@ class Engine(): # define a class
         self.max_score = -sys.maxsize # set max_score to lowest possible integer value
         for move in self.board.legal_moves: # iterate through all legal moves
             self.board.push(move) # push move to board
-            if self.board.is_game_over(can_claim_draw=True) == False: # if stalemate and checkmate are not on the board
+            if self.board.is_game_over(claim_draw=True) == False: # if game is not over
                 self.score = -self.engine.analyse(self.board, chess.engine.Limit(depth=depth))["score"].pov(self.board.turn).score(mate_score=100000) # analyze a position to the depth specified
-            elif self.board.is_stalemate() or self.board.is_insufficient_material() or self.board.can_claim_draw(): # if stalemate is on the board
-                self.score = 0
+            elif self.board.is_stalemate() or self.board.is_insufficient_material() or self.board.can_claim_draw(): # if the game is a draw
+                self.score = 0 # set the score to 0
             elif self.board.is_checkmate(): # if checkmate is on the board
                 self.score = 100000 # set the score to 100k
             self.max_score = max(self.score, self.max_score) # set max_score to the greater of score and max_score
