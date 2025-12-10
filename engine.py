@@ -10,6 +10,7 @@ class Engine():
         self.best_moves = []
         self.max_score = -sys.maxsize
         max_time /= len(list(self.board.legal_moves))
+        max_time = max(max_time, 0.1)
         for move in self.board.legal_moves:
             self.board.push(move)
             if self.board.is_game_over(claim_draw=True) == False:
