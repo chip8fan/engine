@@ -25,5 +25,4 @@ class Engine():
         for move in self.moves:
             if move[1]+cp_loss >= self.max_score:
                 self.best_moves.append(move[0])
-        print(self.best_moves)
         return random.choice(self.best_moves)
