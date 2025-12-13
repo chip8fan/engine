@@ -1,3 +1,4 @@
 __pycache__
 *.pgn
 *.bin
+.DS_Store
