@@ -1,0 +1,21 @@
+token: ""
+url: "http://localhost:8080/"
+engine:
+  dir: "./"
+  name: "Engine"
+  protocol: "homemade"
+challenge:
+  accept_bot: true
+  time_controls:
+    - bullet
+    - blitz
+    - rapid
+    - classical
+    - correspondence
+  modes:
+    - casual
+    - rated
+  variants:
+    - standard
+    - fromPosition
+    - chess960
