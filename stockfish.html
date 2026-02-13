@@ -31,7 +31,7 @@
         pieceTheme: 'chessboardjs/website/img/chesspieces/uscf/{piece}.png',
     };
     let board = Chessboard('board', config);
-    let evaluation = 0;
+    let evaluation;
     function fetch_position() {
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function() {
@@ -48,7 +48,7 @@
         xhttp.onload = function() {
             if (evaluation !== parseFloat(this.responseText.trim())) {
                 evaluation = parseFloat(this.responseText.trim());
-                document.getElementById("eval").innerHTML = this.responseText.trim()
+                document.getElementById("eval").innerHTML = "<a href='index.html'>" + this.responseText.trim() + "</a>"
             }
         };
         xhttp.open("GET", "stockfish-eval.txt?d="+Date.now());
