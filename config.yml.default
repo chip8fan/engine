@@ -1,21 +1,42 @@
 token: ""
 url: "http://localhost:8080/"
 engine:
-  dir: "./"
-  name: "Engine"
-  protocol: "homemade"
+  dir: "/opt/homebrew/bin/"
+  log_dir: "/Library/WebServer/Documents/"
+  name: ""
+  protocol: "uci"
+  polyglot:
+    enabled: true
+    book:
+      standard:
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-01.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-02.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-03.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-04.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-05.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-06.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-07.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-08.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-09.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-10.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-11.bin
+        - /Volumes/Lichess/lichess-bot/engines/2018/2018-12.bin
+  lichess_bot_tbs:
+    syzygy:
+      enabled: true
+      paths:
+        - "/Volumes/Lichess/lichess-bot/engines/syzygy"
+        - "/Volumes/Lichess/lichess-bot/engines/syzygy-6"
+      max_pieces: 6
 challenge:
   accept_bot: true
+  variants:
+    - standard
   time_controls:
     - bullet
     - blitz
     - rapid
     - classical
-    - correspondence
   modes:
     - casual
     - rated
-  variants:
-    - standard
-    - fromPosition
-    - chess960
