@@ -1,3 +1,8 @@
+if [ ! -d "lichess-bot" ]; then
+    git clone https://github.com/chip8fan/lichess-bot.git
+else
+    echo "Directory ${PWD}/lichess-bot exists!"
+fi
 if [ ! -d "bin" ]; then
     echo "Creating directory ${PWD}/bin..."
     mkdir "bin"
