@@ -1,0 +1,37 @@
+show dbs
+use x
+db.dropDatabase()
+
+to install
+brew install redis
+brew services start redis
+
+brew install nvm
+nvm install 24
+nvm use 24
+
+brew tap mongodb/brew
+brew update
+brew install mongodb-community
+brew services start mongodb-community
+
+brew install java
+curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-aarch64-apple-darwin.gz | gzip -d > cs
+sudo chmod +x cs
+./cs setup
+sudo rm -rf cs
+
+to install lila
+git clone --recursive https://github.com/lichess-org/lila.git
+cd lila
+corepack enable
+mongosh lichess < bin/mongodb/indexes.js
+ui/build
+./lila.sh
+
+edit lila/modules/web/src/main/helper/AssetFullHelper.scala
+if netConfig.siteName == "liladocker.duckdns.org:9663" then "lichess.dev"
+
+edit lila/conf/base.conf
+domain = "liladocker.duckdns.org:9663"
+ratelimit = false

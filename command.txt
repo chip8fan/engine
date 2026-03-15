@@ -1,0 +1,1 @@
+python3 lichess-bot.py -u & python3 engines/enter_tourneys.py
