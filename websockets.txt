@@ -1,3 +1,0 @@
-git clone https://github.com/lichess-org/lila-ws.git
-cd lila-ws
-sbt run -Dcsrf.origin=http://liladocker.duckdns.org:9663
