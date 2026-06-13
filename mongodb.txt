@@ -16,11 +16,12 @@ brew update
 brew install mongodb-community
 brew services start mongodb-community
 
+brew install git
 brew install java
-curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-aarch64-apple-darwin.gz | gzip -d > cs
-sudo chmod +x cs
-./cs setup
-sudo rm -rf cs
+brew tap coursier/formulas
+brew update
+brew install coursier
+cs setup
 
 to install lila
 git clone --recursive https://github.com/lichess-org/lila.git
@@ -35,6 +36,7 @@ if netConfig.siteName == "liladocker.duckdns.org:9663" then "lichess.dev"
 
 edit lila/conf/base.conf
 domain = "liladocker.duckdns.org:9663"
+socket.domains = ["liladocker.duckdns.org:9664"]
 ratelimit = false
 
 git clone https://github.com/lichess-org/lila-ws.git
@@ -47,10 +49,11 @@ sudo rm -rf /opt/homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 to install trainingdata-tool
-edit trainingdata-tool/zlib/gzlib.c, trainingdata-tool/zlib/gzread.c, trainingdata-tool/zlib/gzwrite.c
-#include "unistd.h"
-
-edit trainingdata-tool/CMakeLists.txt
-if (APPLE)
-    target_link_libraries(trainingdata-tool -lpthread)
-elseif (UNIX)
+create a Debian 12 (not 13!!) VM and install git, libboost-all-dev, cmake, and gcc
+then
+https://github.com/DanielUranga/trainingdata-tool.git
+cd trainingdata-tool
+git submodule sync --recursive
+git submodule update --recursive --init
+cmake .
+cmake --build .
