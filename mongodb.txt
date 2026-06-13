@@ -16,6 +16,7 @@ brew update
 brew install mongodb-community
 brew services start mongodb-community
 
+brew install python@3.12 (to install tensorflow-macos and tensorflow-metal, which are not available on Python 3.13+ yet)
 brew install git
 brew install java
 brew tap coursier/formulas
