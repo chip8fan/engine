@@ -50,7 +50,7 @@ sudo rm -rf /opt/homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 to install trainingdata-tool
-create a Debian 12 (not 13!!) VM and install git, libboost-all-dev, cmake, and gcc
+create a Debian 12 (not 13!!) VM and install git, libboost-all-dev, cmake, and gcc OR install gcc@13 on macOS host
 then
 https://github.com/DanielUranga/trainingdata-tool.git
 cd trainingdata-tool
