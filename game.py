@@ -4,14 +4,11 @@ import chess.pgn
 import chess.polyglot
 import sys
 import time
-prefix = "/Library/WebServer/Documents/"
+prefix = "/opt/homebrew/bin/"
 engines = {
-    "Stockfish 18": "stockfish-18",
-    "Arasan 25.3": "arasan-25.3",
-    "PlentyChess 7.0.0": "plentychess-7.0.0",
-    "Stockfish 16.1": "stockfish-16.1",
-    "Arasan 24.0": "arasan-24.0",
-    "PlentyChess 3.0.2": "plentychess-3.0.2"
+    "Stockfish": "stockfish",
+    "Fairy-Stockfish": "fairy-stockfish",
+    "Leela": "lc0"
 }
 player1 = sys.argv[1]
 player2 = sys.argv[2]
@@ -22,46 +19,53 @@ match = f"round{games}"
 node = None
 chess_board = chess.Board()
 game = chess.pgn.Game()
-game.headers["Event"] = "Engine Games"
 game.headers["Round"] = f"{games}.{board}"
-game.headers["White"] = player1
-game.headers["Black"] = player2
+game.headers["White"] = engine[0].id["name"]
+game.headers["Black"] = engine[1].id["name"]
 game.headers["WhiteTitle"] = "BOT"
 game.headers["BlackTitle"] = "BOT"
 game.headers["Result"] = "*"
 print(game, file=open(f"{match}/game{board}.pgn", "w"), end="\n\n")
-white_clock = 60*3
-black_clock = 60*3
-inc = 2
+white_clock = 60*90
+black_clock = 60*90
+inc = 30
 while chess_board.is_game_over(claim_draw=True) == False:
     start = time.time()
     try:
         with chess.polyglot.open_reader("book.bin") as reader:
             move = reader.weighted_choice(chess_board).move
+        if chess_board.turn == chess.WHITE:
+            hour = int(white_clock/3600)
+            minute = int(white_clock/60) % 60
+            second = white_clock % 60
+        elif chess_board.turn == chess.BLACK:
+            hour = int(black_clock/3600)
+            minute = int(black_clock/60) % 60
+            second = black_clock % 60
     except IndexError:
         engine_limit = chess.engine.Limit(white_clock=white_clock, black_clock=black_clock, white_inc=inc, black_inc=inc)
         if chess_board.turn == chess.WHITE:
             move = engine[0].play(chess_board, engine_limit).move
         elif chess_board.turn == chess.BLACK:
             move = engine[1].play(chess_board, engine_limit).move
-    if chess_board.turn == chess.WHITE:
-        white_clock -= time.time()-start
-        if white_clock <= 0:
-            game.headers["Result"] = "0-1"
-            break
-        white_clock += inc
-        hour = int(white_clock/3600)
-        minute = int(white_clock/60) % 60
-        second = white_clock % 60
-    elif chess_board.turn == chess.BLACK:
-        black_clock -= time.time()-start
-        if black_clock <= 0:
-            game.headers["Result"] = "1-0"
-            break
-        black_clock += inc
-        hour = int(black_clock/3600)
-        minute = int(black_clock/60) % 60
-        second = black_clock % 60
+        if chess_board.turn == chess.WHITE:
+            white_clock -= time.time()-start
+            if white_clock <= 0:
+                game.headers["Result"] = "0-1"
+                break
+            white_clock += inc
+            hour = int(white_clock/3600)
+            minute = int(white_clock/60) % 60
+            second = white_clock % 60
+        elif chess_board.turn == chess.BLACK:
+            black_clock -= time.time()-start
+            if black_clock <= 0:
+                game.headers["Result"] = "1-0"
+                break
+            black_clock += inc
+            hour = int(black_clock/3600)
+            minute = int(black_clock/60) % 60
+            second = black_clock % 60
     chess_board.push(move)
     if node == None:
         node = game.add_variation(move)
