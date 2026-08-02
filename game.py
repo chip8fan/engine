@@ -2,9 +2,10 @@ import chess
 import chess.engine
 import chess.pgn
 import chess.polyglot
+import os
 import sys
 import time
-prefix = "/opt/homebrew/bin/"
+prefix = "/home/linuxbrew/.linuxbrew/bin/"
 engines = {
     "Stockfish": "stockfish",
     "Fairy-Stockfish": "fairy-stockfish",
@@ -12,10 +13,12 @@ engines = {
 }
 player1 = sys.argv[1]
 player2 = sys.argv[2]
-engine = [chess.engine.SimpleEngine.popen_uci(f"{prefix}{engines[player1]}"), chess.engine.SimpleEngine.popen_uci(f"{prefix}{engines[player2]}")]
 games = int(sys.argv[3])
 board = int(sys.argv[4])
 match = f"round{games}"
+if os.path.isfile(f"{match}/game{board}.pgn"):
+    sys.exit()
+engine = [chess.engine.SimpleEngine.popen_uci(f"{prefix}{engines[player1]}"), chess.engine.SimpleEngine.popen_uci(f"{prefix}{engines[player2]}")]
 node = None
 chess_board = chess.Board()
 game = chess.pgn.Game()
