@@ -10,7 +10,8 @@ engines = {
     "Stockfish": "stockfish",
     "Fairy-Stockfish": "fairy-stockfish",
     "Leela": "lc0",
-    "Fast-Stockfish": "fast-stockfish"
+    "Fast-Stockfish": "fast-stockfish",
+    "Fast-Leela": "fast-lc0"
 }
 player1 = sys.argv[1]
 player2 = sys.argv[2]
@@ -30,13 +31,13 @@ game.headers["WhiteTitle"] = "BOT"
 game.headers["BlackTitle"] = "BOT"
 game.headers["Result"] = "*"
 print(game, file=open(f"{match}/game{board}.pgn", "w"), end="\n\n")
-white_clock = 60*90
-black_clock = 60*90
-inc = 30
+white_clock = 60
+black_clock = 60
+inc = 1
 while chess_board.is_game_over(claim_draw=True) == False:
     start = time.time()
     try:
-        with chess.polyglot.open_reader("book.bin") as reader:
+        with chess.polyglot.open_reader("elite.bin") as reader:
             move = reader.weighted_choice(chess_board).move
         if chess_board.turn == chess.WHITE:
             hour = int(white_clock/3600)

@@ -9,30 +9,53 @@ prefix = "/home/linuxbrew/.linuxbrew/bin/"
 engines = {
     "Stockfish": "stockfish",
     "Fairy-Stockfish": "fairy-stockfish",
-    "Leela": "lc0",
-    "Fast-Stockfish": "fast-stockfish"
+    "Leela": "lc0"
 }
 player1 = sys.argv[1]
 player2 = sys.argv[2]
 games = int(sys.argv[3])
 board = int(sys.argv[4])
 match = f"round{games}"
-if os.path.isfile(f"{match}/game{board}.pgn"):
-    sys.exit()
 engine = [chess.engine.SimpleEngine.popen_uci(f"{prefix}{engines[player1]}"), chess.engine.SimpleEngine.popen_uci(f"{prefix}{engines[player2]}")]
 node = None
 chess_board = chess.Board()
 game = chess.pgn.Game()
-game.headers["Round"] = f"{games}.{board}"
-game.headers["White"] = engine[0].id["name"]
-game.headers["Black"] = engine[1].id["name"]
 game.headers["WhiteTitle"] = "BOT"
 game.headers["BlackTitle"] = "BOT"
 game.headers["Result"] = "*"
-print(game, file=open(f"{match}/game{board}.pgn", "w"), end="\n\n")
-white_clock = 60*90
-black_clock = 60*90
 inc = 30
+if os.path.isfile(f"{match}/game{board}.pgn"):
+    input("WARN: You are resuming an old game.")
+    white = []
+    black = []
+    with open(f"{match}/game{board}.pgn") as file:
+        current_game = chess.pgn.read_game(file)
+        if current_game.headers["Result"] != "*":
+            sys.exit()
+        game.headers["Round"] = current_game.headers["Round"]
+        game.headers["White"] = current_game.headers["White"]
+        game.headers["Black"] = current_game.headers["Black"]
+        mainline_moves = current_game.mainline()
+        for move in mainline_moves:
+            if chess_board.turn == chess.WHITE:
+                white.append(move.clock())
+            elif chess_board.turn == chess.BLACK:
+                black.append(move.clock())
+            chess_board.push(move.move)
+            if node == None:
+                node = game.add_variation(move.move)
+            else:
+                node = node.add_variation(move.move)
+            node.comment = move.comment
+    white_clock = white[-1]
+    black_clock = black[-1]
+else:
+    game.headers["Round"] = f"{games}.{board}"
+    game.headers["White"] = engine[0].id["name"]
+    game.headers["Black"] = engine[1].id["name"]
+    print(game, file=open(f"{match}/game{board}.pgn", "w"), end="\n\n")
+    white_clock = 60*90
+    black_clock = 60*90
 while chess_board.is_game_over(claim_draw=True) == False:
     start = time.time()
     try:
