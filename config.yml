@@ -1,20 +1,9 @@
 token: ""
-url: "http://liladocker.duckdns.org:9663/"
+url: "https://lichess.org/"
 engine:
   dir: ""
   name: ""
   protocol: "uci"
-  polyglot:
-    enabled: true
-    book:
-      standard:
-        - "/Users/me/Downloads/chess/bin/book.bin"
-  lichess_bot_tbs:
-    syzygy:
-      enabled: true
-      paths:
-        - "/Users/me/Downloads/chess/bin/syzygy"
-      max_pieces: 5
 challenge:
   accept_bot: true
   variants:
